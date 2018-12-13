@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gluxen.dao.DailyPatientManualDAO">
+    <select id="getDailyPatientList" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT
+        dp.inquiry_id inquiryId,
+        dp.patient_id pId,
+        DATE_FORMAT(dp.iq_date,'%Y-%m-%d %H:%i') inquiryDate,
+        dp.times times,
+        p.gender gender,
+        p.residence residence,
+        dp.count_age age,
+        p.pname pName
+        FROM daily_patient dp
+        JOIN patient p
+        ON dp.patient_id = p.patient_id
+        AND p.delete_flag = 0
+        <if test="pName != null and pName != ''">
+            AND p.pname like CONCAT(CONCAT('%', #{pName, jdbcType=VARCHAR}),'%')
+        </if>
+
+        AND(
+            dp.year > #{startYear, jdbcType=INTEGER}  OR
+            (dp.year = #{startYear, jdbcType=INTEGER} AND  dp.month > #{startMonth, jdbcType=INTEGER}) OR
+            (dp.year = #{startYear, jdbcType=INTEGER} AND  dp.month = #{startMonth, jdbcType=INTEGER} AND dp.day >= #{startDay, jdbcType=INTEGER} )
+        )
+
+        AND(
+            dp.year &lt; #{endYear, jdbcType=INTEGER}  OR
+            (dp.year = #{endYear, jdbcType=INTEGER} AND  dp.month &lt; #{endMonth, jdbcType=INTEGER}) OR
+            (dp.year = #{endYear, jdbcType=INTEGER} AND  dp.month = #{endMonth, jdbcType=INTEGER} AND dp.day &lt;= #{endDay, jdbcType=INTEGER} )
+        )
+
+        <if test="residence != null and residence !=''">
+            AND p.residence like CONCAT(CONCAT('%', #{residence, jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="gender != null and gender != ''">
+            AND p.gender = #{gender,jdbcType=VARCHAR}
+        </if>
+        <if test="startDate != null and startDate != ''">
+            AND dp.iq_date &gt;= #{startDate,jdbcType=DATE}
+        </if>
+        <if test="endDate != null and endDate != ''">
+            AND dp.iq_date &lt;= #{endDate,jdbcType=DATE}
+        </if>
+        <if test="pId != null and pId != ''">
+            AND dp.patient_id = #{pId,jdbcType= BIGINT }
+        </if>
+        <if test="keyWords !=null and keyWords != ''">
+            JOIN diagnose_labels dl
+            ON dp.patient_id = dl.patient_id
+            AND (
+               (dp.inquiry_id = dl.inquiry_id  AND dl.diagnose_labels like CONCAT(CONCAT('%', #{keyWords, jdbcType=VARCHAR}),'%'))
+               OR
+               dp.description like CONCAT(CONCAT('%', #{keyWords, jdbcType=VARCHAR}),'%')
+            )
+        </if>
+        GROUP BY dp.inquiry_id
+        ORDER BY dp.iq_date desc
+    </select>
+
+    <select id="getQuestionPatientList" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT
+        dp.inquiry_id inquiryId,
+        dp.patient_id pId,
+        dp.iq_date inquiryDate,
+        p.gender gender,
+        p.residence residence,
+        p.age age,
+        p.pname pName,
+        dp.question_flag questionFlag
+        FROM daily_patient dp
+        JOIN patient p
+        ON dp.patient_id = p.patient_id
+        <if test="iqDate != null and iqDate != ''">
+            AND dp.iq_date = #{iqDate,jdbcType=DATE}
+        </if>
+        ORDER BY dp.question_flag ASC
+    </select>
+</mapper>

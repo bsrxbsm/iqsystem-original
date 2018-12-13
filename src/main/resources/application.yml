@@ -1,0 +1,47 @@
+spring:
+  datasource:
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://120.78.2.36:3306/iqsystem?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
+#      url: jdbc:mysql://localhost:3306/iqsystem?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+      username: root
+#      password: 123456
+      password: root
+  http:
+      multipart:
+        max-file-size: 10Mb
+        max-request-size: 50mb
+        enabled: true
+  aop:
+    auto: true
+    proxy-target-class: false
+ # resources:
+  #  static-locations: file:${web.front-path}
+
+
+mybatis:
+   mapperLocations: classpath:/mapper/*.xml
+   configuration:
+      mapUnderscoreToCamelCase: true
+#      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: /api-docs
+
+logging:
+  level: debug
+server:
+  port: 8087
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  pageSizeZero: false
+  params: count=countSql
+
+web:
+  front-path: /usr/local/tomcat/apache-tomcats/iqSystem/iqSystemWithFront/zywzxt/
+  #front-path: D:\inquirysystem\front\zywzxt\

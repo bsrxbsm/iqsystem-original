@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gluxen.dao.PatientManualDAO">
+    <select id="getPatientList" resultType="com.alibaba.fastjson.JSONObject" parameterType="string">
+        SELECT
+        DISTINCT(dp.patient_id) pId,
+        DATE_FORMAT(max(dp.iq_date),'%Y-%m-%d %H:%i') latestDate,
+        p.gender gender,
+        p.residence residence,
+        p.age age,
+        p.pname pName
+        FROM daily_patient dp
+        JOIN patient p
+        ON dp.patient_id = p.patient_id
+        WHERE p.delete_flag = 0
+        <if test="pName != null and pName != ''">
+            AND p.pname like CONCAT(CONCAT('%', #{pName, jdbcType=VARCHAR}),'%')
+        </if>
+        GROUP BY dp.patient_id
+        ORDER BY latestDate desc
+    </select>
+
+    <select id="getRevisitList" resultType="com.alibaba.fastjson.JSONObject" parameterType="com.gluxen.PO.Patient">
+        SELECT
+        DISTINCT(dp.patient_id) pId,
+        max(dp.iq_date) latestDate,
+        p.gender gender,
+        p.residence residence,
+        p.age age,
+        p.pname pName
+        FROM daily_patient dp
+        JOIN patient p
+        ON dp.patient_id = p.patient_id
+        AND p.delete_flag = 0
+        <if test="pname != null and pname != ''">
+            AND p.pname like CONCAT(CONCAT('%', #{pname, jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="gender != null and gender != ''">
+            AND p.gender = #{gender,jdbcType=VARCHAR}
+        </if>
+        <if test="age != null and age != ''">
+            AND p.age = #{age,jdbcType= INTEGER }
+        </if>
+        <if test="sourceProvince != null and sourceProvince != ''">
+            AND p.sourceProvince = #{sourceProvince,jdbcType= INTEGER }
+        </if>
+        <if test="sourceCity != null and sourceCity != ''">
+            AND p.sourceCity = #{sourceCity,jdbcType= INTEGER }
+        </if>
+        GROUP BY dp.patient_id
+        ORDER BY dp.patient_id desc
+    </select>
+</mapper>

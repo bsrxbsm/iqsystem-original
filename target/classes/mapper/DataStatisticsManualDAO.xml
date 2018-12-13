@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gluxen.dao.DataStatisticsDAO">
+    <select id="getInquirySituation" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT
+        dp.inquiry_id inquiryId,
+        dp.patient_id pId,
+        dp.iq_date inquiryDate,
+        dp.diagnose_label description,
+        dp.times times,
+        dp.amount amount,
+        p.gender gender,
+        p.residence residence,
+        dp.count_age age,
+        p.pname pName
+        FROM daily_patient dp
+        JOIN patient p
+        ON dp.patient_id = p.patient_id
+        WHERE p.delete_flag = 0
+        <if test="startDate != null and startDate != ''">
+            AND dp.iq_date &gt;= #{startDate,jdbcType=DATE}
+        </if>
+        <if test="endDate != null and endDate != ''">
+            AND dp.iq_date &lt;= #{endDate,jdbcType=DATE}
+        </if>
+        ORDER BY dp.iq_date desc
+    </select>
+
+    <select id="mainDrugUse" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT
+        rd.medicine medicine,
+        sum(r.amount*rd.dose) dose
+        FROM
+        recipe_detail rd,
+        recipe r,
+        daily_patient dp
+        WHERE r.is_stock = 1
+        AND r.recipe_id = rd.recipe_id
+        AND dp.inquiry_id = r.inquiry_id
+        <if test="startDate != null and startDate != ''">
+            AND dp.iq_date &gt;= #{startDate,jdbcType=DATE}
+        </if>
+        <if test="endDate != null and endDate != ''">
+            AND dp.iq_date &lt;= #{endDate,jdbcType=DATE}
+        </if>
+        GROUP BY medicine
+    </select>
+
+    <select id="viceDrugUse" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT
+        vrd.medicine medicine,
+        sum(vr.amount*vrd.dose) dose
+        FROM
+        vice_recipe_detail vrd,
+        vice_recipe vr,
+        daily_patient dp,
+        recipe r
+        WHERE vr.is_stock = 1
+        AND r.recipe_id = vr.recipe_id
+        AND vr.vice_recipe_id = vrd.vice_recipe_id
+        AND dp.inquiry_id = r.inquiry_id
+        <if test="startDate != null and startDate != ''">
+            AND dp.iq_date &gt;= #{startDate,jdbcType=DATE}
+        </if>
+        <if test="endDate != null and endDate != ''">
+            AND dp.iq_date &lt;= #{endDate,jdbcType=DATE}
+        </if>
+        GROUP BY medicine
+    </select>
+
+
+    <select id="drugUse" resultType="com.alibaba.fastjson.JSONObject">
+            SELECT medicine medicine,sum(dose) dose FROM
+            (
+                SELECT
+                rd.medicine medicine,
+                sum(r.amount*rd.dose) dose
+                FROM
+                recipe_detail rd,
+                recipe r,
+                daily_patient dp,
+                patient p
+                WHERE r.is_stock = 1
+                AND r.recipe_id = rd.recipe_id
+                AND dp.inquiry_id = r.inquiry_id
+                AND p.patient_id = dp.patient_id
+                AND p.delete_flag != 1
+                <if test="startDate != null and startDate != ''">
+                    AND dp.iq_date &gt;= #{startDate,jdbcType=DATE}
+                </if>
+                <if test="endDate != null and endDate != ''">
+                    AND dp.iq_date &lt;= #{endDate,jdbcType=DATE}
+                </if>
+                <if test="medicine != null and medicine != ''">
+                    AND rd.medicine like CONCAT(CONCAT('%', #{medicine, jdbcType=VARCHAR}),'%')
+                </if>
+                GROUP BY medicine
+                UNION  ALL
+                SELECT
+                vrd.medicine medicine,
+                sum(vr.amount*vrd.dose) dose
+                FROM
+                vice_recipe_detail vrd,
+                vice_recipe vr,
+                daily_patient dp,
+                recipe r,
+                patient p
+                WHERE vr.is_stock = 1
+                AND r.recipe_id = vr.recipe_id
+                AND vr.vice_recipe_id = vrd.vice_recipe_id
+                AND dp.inquiry_id = r.inquiry_id
+                AND p.patient_id = dp.patient_id
+                AND p.delete_flag != 1
+                <if test="startDate != null and startDate != ''">
+                    AND dp.iq_date &gt;= #{startDate,jdbcType=DATE}
+                </if>
+                <if test="endDate != null and endDate != ''">
+                    AND dp.iq_date &lt;= #{endDate,jdbcType=DATE}
+                </if>
+                <if test="medicine != null and medicine != ''">
+                    AND vrd.medicine like CONCAT(CONCAT('%', #{medicine, jdbcType=VARCHAR}),'%')
+                </if>
+                GROUP BY medicine
+            )
+            AS T
+            GROUP BY medicine
+    </select>
+
+    <select id="getAllId" resultType="Long">
+        SELECT dp.inquiry_id FROM daily_patient as dp
+        <if test="patientId != null and patientId != ''">
+            WHERE dp.patient_id = #{patientId,jdbcType=BIGINT}
+        </if>
+    </select>
+
+</mapper>

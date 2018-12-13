@@ -1,0 +1,972 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gluxen.dao.PatientDAO">
+  <resultMap id="BaseResultMap" type="com.gluxen.PO.Patient">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="patient_id" jdbcType="BIGINT" property="patientId" />
+    <result column="certificates_type" jdbcType="VARCHAR" property="certificatesType" />
+    <result column="certificates_number" jdbcType="VARCHAR" property="certificatesNumber" />
+    <result column="pname" jdbcType="VARCHAR" property="pname" />
+    <result column="gender" jdbcType="VARCHAR" property="gender" />
+    <result column="age" jdbcType="INTEGER" property="age" />
+    <result column="birthday" jdbcType="DATE" property="birthday" />
+    <result column="nationality" jdbcType="VARCHAR" property="nationality" />
+    <result column="national" jdbcType="VARCHAR" property="national" />
+    <result column="incunabulum" jdbcType="VARCHAR" property="incunabulum" />
+    <result column="residence" jdbcType="VARCHAR" property="residence" />
+    <result column="height" jdbcType="INTEGER" property="height" />
+    <result column="weight" jdbcType="INTEGER" property="weight" />
+    <result column="occupation" jdbcType="VARCHAR" property="occupation" />
+    <result column="marriage" jdbcType="VARCHAR" property="marriage" />
+    <result column="religious_belief" jdbcType="VARCHAR" property="religiousBelief" />
+    <result column="eating_habits" jdbcType="VARCHAR" property="eatingHabits" />
+    <result column="eh_remark" jdbcType="VARCHAR" property="ehRemark" />
+    <result column="heredity_history" jdbcType="VARCHAR" property="heredityHistory" />
+    <result column="hh_remark" jdbcType="VARCHAR" property="hhRemark" />
+    <result column="infection_history" jdbcType="VARCHAR" property="infectionHistory" />
+    <result column="ih_remark" jdbcType="VARCHAR" property="ihRemark" />
+    <result column="trauma_history" jdbcType="VARCHAR" property="traumaHistory" />
+    <result column="surgery_history" jdbcType="VARCHAR" property="surgeryHistory" />
+    <result column="family_history" jdbcType="VARCHAR" property="familyHistory" />
+    <result column="contact_history" jdbcType="VARCHAR" property="contactHistory" />
+    <result column="ch_remark" jdbcType="VARCHAR" property="chRemark" />
+    <result column="me_allergy" jdbcType="VARCHAR" property="meAllergy" />
+    <result column="meall_remark" jdbcType="VARCHAR" property="meallRemark" />
+    <result column="allergy" jdbcType="VARCHAR" property="allergy" />
+    <result column="all_remark" jdbcType="VARCHAR" property="allRemark" />
+    <result column="blood_trans" jdbcType="VARCHAR" property="bloodTrans" />
+    <result column="smoke" jdbcType="VARCHAR" property="smoke" />
+    <result column="daily_smoke" jdbcType="INTEGER" property="dailySmoke" />
+    <result column="quit_smoke" jdbcType="VARCHAR" property="quitSmoke" />
+    <result column="pregnant" jdbcType="INTEGER" property="pregnant" />
+    <result column="birth" jdbcType="INTEGER" property="birth" />
+    <result column="premature_labour" jdbcType="VARCHAR" property="prematureLabour" />
+    <result column="abortion" jdbcType="VARCHAR" property="abortion" />
+    <result column="insert_date" jdbcType="DATE" property="insertDate" />
+    <result column="source_province" jdbcType="INTEGER" property="sourceProvince" />
+    <result column="source_city" jdbcType="INTEGER" property="sourceCity" />
+    <result column="incu_province" jdbcType="INTEGER" property="incuProvince" />
+    <result column="incu_city" jdbcType="INTEGER" property="incuCity" />
+    <result column="quit_smoke_time" jdbcType="VARCHAR" property="quitSmokeTime" />
+    <result column="contraception" jdbcType="VARCHAR" property="contraception" />
+    <result column="drink" jdbcType="VARCHAR" property="drink" />
+    <result column="daily_drink" jdbcType="INTEGER" property="dailyDrink" />
+    <result column="quit_drink" jdbcType="VARCHAR" property="quitDrink" />
+    <result column="quit_drink_time" jdbcType="VARCHAR" property="quitDrinkTime" />
+    <result column="iq_date" jdbcType="DATE" property="iqDate" />
+    <result column="delete_flag" jdbcType="INTEGER" property="deleteFlag" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, patient_id, certificates_type, certificates_number, pname, gender, age, birthday, 
+    nationality, `national`, incunabulum, residence, height, weight, occupation, marriage, 
+    religious_belief, eating_habits, eh_remark, heredity_history, hh_remark, infection_history, 
+    ih_remark, trauma_history, surgery_history, family_history, contact_history, ch_remark, 
+    me_allergy, meall_remark, allergy, all_remark, blood_trans, smoke, daily_smoke, quit_smoke, 
+    pregnant, birth, premature_labour, abortion, insert_date, source_province, source_city, 
+    incu_province, incu_city, quit_smoke_time, contraception, drink, daily_drink, quit_drink, 
+    quit_drink_time, iq_date, delete_flag
+  </sql>
+  <select id="selectByExample" parameterType="com.gluxen.PO.PatientExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from patient
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from patient
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from patient
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.gluxen.PO.PatientExample">
+    delete from patient
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.gluxen.PO.Patient" useGeneratedKeys="true">
+    insert into patient (patient_id, certificates_type, certificates_number, 
+      pname, gender, age, 
+      birthday, nationality, `national`, 
+      incunabulum, residence, height, 
+      weight, occupation, marriage, 
+      religious_belief, eating_habits, eh_remark, 
+      heredity_history, hh_remark, infection_history, 
+      ih_remark, trauma_history, surgery_history, 
+      family_history, contact_history, ch_remark, 
+      me_allergy, meall_remark, allergy, 
+      all_remark, blood_trans, smoke, 
+      daily_smoke, quit_smoke, pregnant, 
+      birth, premature_labour, abortion, 
+      insert_date, source_province, source_city, 
+      incu_province, incu_city, quit_smoke_time, 
+      contraception, drink, daily_drink, 
+      quit_drink, quit_drink_time, iq_date, 
+      delete_flag)
+    values (#{patientId,jdbcType=BIGINT}, #{certificatesType,jdbcType=VARCHAR}, #{certificatesNumber,jdbcType=VARCHAR}, 
+      #{pname,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER}, 
+      #{birthday,jdbcType=DATE}, #{nationality,jdbcType=VARCHAR}, #{national,jdbcType=VARCHAR}, 
+      #{incunabulum,jdbcType=VARCHAR}, #{residence,jdbcType=VARCHAR}, #{height,jdbcType=INTEGER}, 
+      #{weight,jdbcType=INTEGER}, #{occupation,jdbcType=VARCHAR}, #{marriage,jdbcType=VARCHAR}, 
+      #{religiousBelief,jdbcType=VARCHAR}, #{eatingHabits,jdbcType=VARCHAR}, #{ehRemark,jdbcType=VARCHAR}, 
+      #{heredityHistory,jdbcType=VARCHAR}, #{hhRemark,jdbcType=VARCHAR}, #{infectionHistory,jdbcType=VARCHAR}, 
+      #{ihRemark,jdbcType=VARCHAR}, #{traumaHistory,jdbcType=VARCHAR}, #{surgeryHistory,jdbcType=VARCHAR}, 
+      #{familyHistory,jdbcType=VARCHAR}, #{contactHistory,jdbcType=VARCHAR}, #{chRemark,jdbcType=VARCHAR}, 
+      #{meAllergy,jdbcType=VARCHAR}, #{meallRemark,jdbcType=VARCHAR}, #{allergy,jdbcType=VARCHAR}, 
+      #{allRemark,jdbcType=VARCHAR}, #{bloodTrans,jdbcType=VARCHAR}, #{smoke,jdbcType=VARCHAR}, 
+      #{dailySmoke,jdbcType=INTEGER}, #{quitSmoke,jdbcType=VARCHAR}, #{pregnant,jdbcType=INTEGER}, 
+      #{birth,jdbcType=INTEGER}, #{prematureLabour,jdbcType=VARCHAR}, #{abortion,jdbcType=VARCHAR}, 
+      #{insertDate,jdbcType=DATE}, #{sourceProvince,jdbcType=INTEGER}, #{sourceCity,jdbcType=INTEGER}, 
+      #{incuProvince,jdbcType=INTEGER}, #{incuCity,jdbcType=INTEGER}, #{quitSmokeTime,jdbcType=VARCHAR}, 
+      #{contraception,jdbcType=VARCHAR}, #{drink,jdbcType=VARCHAR}, #{dailyDrink,jdbcType=INTEGER}, 
+      #{quitDrink,jdbcType=VARCHAR}, #{quitDrinkTime,jdbcType=VARCHAR}, #{iqDate,jdbcType=DATE}, 
+      #{deleteFlag,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.gluxen.PO.Patient" useGeneratedKeys="true">
+    insert into patient
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="patientId != null">
+        patient_id,
+      </if>
+      <if test="certificatesType != null">
+        certificates_type,
+      </if>
+      <if test="certificatesNumber != null">
+        certificates_number,
+      </if>
+      <if test="pname != null">
+        pname,
+      </if>
+      <if test="gender != null">
+        gender,
+      </if>
+      <if test="age != null">
+        age,
+      </if>
+      <if test="birthday != null">
+        birthday,
+      </if>
+      <if test="nationality != null">
+        nationality,
+      </if>
+      <if test="national != null">
+        `national`,
+      </if>
+      <if test="incunabulum != null">
+        incunabulum,
+      </if>
+      <if test="residence != null">
+        residence,
+      </if>
+      <if test="height != null">
+        height,
+      </if>
+      <if test="weight != null">
+        weight,
+      </if>
+      <if test="occupation != null">
+        occupation,
+      </if>
+      <if test="marriage != null">
+        marriage,
+      </if>
+      <if test="religiousBelief != null">
+        religious_belief,
+      </if>
+      <if test="eatingHabits != null">
+        eating_habits,
+      </if>
+      <if test="ehRemark != null">
+        eh_remark,
+      </if>
+      <if test="heredityHistory != null">
+        heredity_history,
+      </if>
+      <if test="hhRemark != null">
+        hh_remark,
+      </if>
+      <if test="infectionHistory != null">
+        infection_history,
+      </if>
+      <if test="ihRemark != null">
+        ih_remark,
+      </if>
+      <if test="traumaHistory != null">
+        trauma_history,
+      </if>
+      <if test="surgeryHistory != null">
+        surgery_history,
+      </if>
+      <if test="familyHistory != null">
+        family_history,
+      </if>
+      <if test="contactHistory != null">
+        contact_history,
+      </if>
+      <if test="chRemark != null">
+        ch_remark,
+      </if>
+      <if test="meAllergy != null">
+        me_allergy,
+      </if>
+      <if test="meallRemark != null">
+        meall_remark,
+      </if>
+      <if test="allergy != null">
+        allergy,
+      </if>
+      <if test="allRemark != null">
+        all_remark,
+      </if>
+      <if test="bloodTrans != null">
+        blood_trans,
+      </if>
+      <if test="smoke != null">
+        smoke,
+      </if>
+      <if test="dailySmoke != null">
+        daily_smoke,
+      </if>
+      <if test="quitSmoke != null">
+        quit_smoke,
+      </if>
+      <if test="pregnant != null">
+        pregnant,
+      </if>
+      <if test="birth != null">
+        birth,
+      </if>
+      <if test="prematureLabour != null">
+        premature_labour,
+      </if>
+      <if test="abortion != null">
+        abortion,
+      </if>
+      <if test="insertDate != null">
+        insert_date,
+      </if>
+      <if test="sourceProvince != null">
+        source_province,
+      </if>
+      <if test="sourceCity != null">
+        source_city,
+      </if>
+      <if test="incuProvince != null">
+        incu_province,
+      </if>
+      <if test="incuCity != null">
+        incu_city,
+      </if>
+      <if test="quitSmokeTime != null">
+        quit_smoke_time,
+      </if>
+      <if test="contraception != null">
+        contraception,
+      </if>
+      <if test="drink != null">
+        drink,
+      </if>
+      <if test="dailyDrink != null">
+        daily_drink,
+      </if>
+      <if test="quitDrink != null">
+        quit_drink,
+      </if>
+      <if test="quitDrinkTime != null">
+        quit_drink_time,
+      </if>
+      <if test="iqDate != null">
+        iq_date,
+      </if>
+      <if test="deleteFlag != null">
+        delete_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="patientId != null">
+        #{patientId,jdbcType=BIGINT},
+      </if>
+      <if test="certificatesType != null">
+        #{certificatesType,jdbcType=VARCHAR},
+      </if>
+      <if test="certificatesNumber != null">
+        #{certificatesNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="pname != null">
+        #{pname,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null">
+        #{age,jdbcType=INTEGER},
+      </if>
+      <if test="birthday != null">
+        #{birthday,jdbcType=DATE},
+      </if>
+      <if test="nationality != null">
+        #{nationality,jdbcType=VARCHAR},
+      </if>
+      <if test="national != null">
+        #{national,jdbcType=VARCHAR},
+      </if>
+      <if test="incunabulum != null">
+        #{incunabulum,jdbcType=VARCHAR},
+      </if>
+      <if test="residence != null">
+        #{residence,jdbcType=VARCHAR},
+      </if>
+      <if test="height != null">
+        #{height,jdbcType=INTEGER},
+      </if>
+      <if test="weight != null">
+        #{weight,jdbcType=INTEGER},
+      </if>
+      <if test="occupation != null">
+        #{occupation,jdbcType=VARCHAR},
+      </if>
+      <if test="marriage != null">
+        #{marriage,jdbcType=VARCHAR},
+      </if>
+      <if test="religiousBelief != null">
+        #{religiousBelief,jdbcType=VARCHAR},
+      </if>
+      <if test="eatingHabits != null">
+        #{eatingHabits,jdbcType=VARCHAR},
+      </if>
+      <if test="ehRemark != null">
+        #{ehRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="heredityHistory != null">
+        #{heredityHistory,jdbcType=VARCHAR},
+      </if>
+      <if test="hhRemark != null">
+        #{hhRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="infectionHistory != null">
+        #{infectionHistory,jdbcType=VARCHAR},
+      </if>
+      <if test="ihRemark != null">
+        #{ihRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="traumaHistory != null">
+        #{traumaHistory,jdbcType=VARCHAR},
+      </if>
+      <if test="surgeryHistory != null">
+        #{surgeryHistory,jdbcType=VARCHAR},
+      </if>
+      <if test="familyHistory != null">
+        #{familyHistory,jdbcType=VARCHAR},
+      </if>
+      <if test="contactHistory != null">
+        #{contactHistory,jdbcType=VARCHAR},
+      </if>
+      <if test="chRemark != null">
+        #{chRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="meAllergy != null">
+        #{meAllergy,jdbcType=VARCHAR},
+      </if>
+      <if test="meallRemark != null">
+        #{meallRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="allergy != null">
+        #{allergy,jdbcType=VARCHAR},
+      </if>
+      <if test="allRemark != null">
+        #{allRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="bloodTrans != null">
+        #{bloodTrans,jdbcType=VARCHAR},
+      </if>
+      <if test="smoke != null">
+        #{smoke,jdbcType=VARCHAR},
+      </if>
+      <if test="dailySmoke != null">
+        #{dailySmoke,jdbcType=INTEGER},
+      </if>
+      <if test="quitSmoke != null">
+        #{quitSmoke,jdbcType=VARCHAR},
+      </if>
+      <if test="pregnant != null">
+        #{pregnant,jdbcType=INTEGER},
+      </if>
+      <if test="birth != null">
+        #{birth,jdbcType=INTEGER},
+      </if>
+      <if test="prematureLabour != null">
+        #{prematureLabour,jdbcType=VARCHAR},
+      </if>
+      <if test="abortion != null">
+        #{abortion,jdbcType=VARCHAR},
+      </if>
+      <if test="insertDate != null">
+        #{insertDate,jdbcType=DATE},
+      </if>
+      <if test="sourceProvince != null">
+        #{sourceProvince,jdbcType=INTEGER},
+      </if>
+      <if test="sourceCity != null">
+        #{sourceCity,jdbcType=INTEGER},
+      </if>
+      <if test="incuProvince != null">
+        #{incuProvince,jdbcType=INTEGER},
+      </if>
+      <if test="incuCity != null">
+        #{incuCity,jdbcType=INTEGER},
+      </if>
+      <if test="quitSmokeTime != null">
+        #{quitSmokeTime,jdbcType=VARCHAR},
+      </if>
+      <if test="contraception != null">
+        #{contraception,jdbcType=VARCHAR},
+      </if>
+      <if test="drink != null">
+        #{drink,jdbcType=VARCHAR},
+      </if>
+      <if test="dailyDrink != null">
+        #{dailyDrink,jdbcType=INTEGER},
+      </if>
+      <if test="quitDrink != null">
+        #{quitDrink,jdbcType=VARCHAR},
+      </if>
+      <if test="quitDrinkTime != null">
+        #{quitDrinkTime,jdbcType=VARCHAR},
+      </if>
+      <if test="iqDate != null">
+        #{iqDate,jdbcType=DATE},
+      </if>
+      <if test="deleteFlag != null">
+        #{deleteFlag,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.gluxen.PO.PatientExample" resultType="java.lang.Long">
+    select count(*) from patient
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update patient
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.patientId != null">
+        patient_id = #{record.patientId,jdbcType=BIGINT},
+      </if>
+      <if test="record.certificatesType != null">
+        certificates_type = #{record.certificatesType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.certificatesNumber != null">
+        certificates_number = #{record.certificatesNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pname != null">
+        pname = #{record.pname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gender != null">
+        gender = #{record.gender,jdbcType=VARCHAR},
+      </if>
+      <if test="record.age != null">
+        age = #{record.age,jdbcType=INTEGER},
+      </if>
+      <if test="record.birthday != null">
+        birthday = #{record.birthday,jdbcType=DATE},
+      </if>
+      <if test="record.nationality != null">
+        nationality = #{record.nationality,jdbcType=VARCHAR},
+      </if>
+      <if test="record.national != null">
+        `national` = #{record.national,jdbcType=VARCHAR},
+      </if>
+      <if test="record.incunabulum != null">
+        incunabulum = #{record.incunabulum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.residence != null">
+        residence = #{record.residence,jdbcType=VARCHAR},
+      </if>
+      <if test="record.height != null">
+        height = #{record.height,jdbcType=INTEGER},
+      </if>
+      <if test="record.weight != null">
+        weight = #{record.weight,jdbcType=INTEGER},
+      </if>
+      <if test="record.occupation != null">
+        occupation = #{record.occupation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.marriage != null">
+        marriage = #{record.marriage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.religiousBelief != null">
+        religious_belief = #{record.religiousBelief,jdbcType=VARCHAR},
+      </if>
+      <if test="record.eatingHabits != null">
+        eating_habits = #{record.eatingHabits,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ehRemark != null">
+        eh_remark = #{record.ehRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.heredityHistory != null">
+        heredity_history = #{record.heredityHistory,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hhRemark != null">
+        hh_remark = #{record.hhRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.infectionHistory != null">
+        infection_history = #{record.infectionHistory,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ihRemark != null">
+        ih_remark = #{record.ihRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.traumaHistory != null">
+        trauma_history = #{record.traumaHistory,jdbcType=VARCHAR},
+      </if>
+      <if test="record.surgeryHistory != null">
+        surgery_history = #{record.surgeryHistory,jdbcType=VARCHAR},
+      </if>
+      <if test="record.familyHistory != null">
+        family_history = #{record.familyHistory,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contactHistory != null">
+        contact_history = #{record.contactHistory,jdbcType=VARCHAR},
+      </if>
+      <if test="record.chRemark != null">
+        ch_remark = #{record.chRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.meAllergy != null">
+        me_allergy = #{record.meAllergy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.meallRemark != null">
+        meall_remark = #{record.meallRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.allergy != null">
+        allergy = #{record.allergy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.allRemark != null">
+        all_remark = #{record.allRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bloodTrans != null">
+        blood_trans = #{record.bloodTrans,jdbcType=VARCHAR},
+      </if>
+      <if test="record.smoke != null">
+        smoke = #{record.smoke,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dailySmoke != null">
+        daily_smoke = #{record.dailySmoke,jdbcType=INTEGER},
+      </if>
+      <if test="record.quitSmoke != null">
+        quit_smoke = #{record.quitSmoke,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pregnant != null">
+        pregnant = #{record.pregnant,jdbcType=INTEGER},
+      </if>
+      <if test="record.birth != null">
+        birth = #{record.birth,jdbcType=INTEGER},
+      </if>
+      <if test="record.prematureLabour != null">
+        premature_labour = #{record.prematureLabour,jdbcType=VARCHAR},
+      </if>
+      <if test="record.abortion != null">
+        abortion = #{record.abortion,jdbcType=VARCHAR},
+      </if>
+      <if test="record.insertDate != null">
+        insert_date = #{record.insertDate,jdbcType=DATE},
+      </if>
+      <if test="record.sourceProvince != null">
+        source_province = #{record.sourceProvince,jdbcType=INTEGER},
+      </if>
+      <if test="record.sourceCity != null">
+        source_city = #{record.sourceCity,jdbcType=INTEGER},
+      </if>
+      <if test="record.incuProvince != null">
+        incu_province = #{record.incuProvince,jdbcType=INTEGER},
+      </if>
+      <if test="record.incuCity != null">
+        incu_city = #{record.incuCity,jdbcType=INTEGER},
+      </if>
+      <if test="record.quitSmokeTime != null">
+        quit_smoke_time = #{record.quitSmokeTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contraception != null">
+        contraception = #{record.contraception,jdbcType=VARCHAR},
+      </if>
+      <if test="record.drink != null">
+        drink = #{record.drink,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dailyDrink != null">
+        daily_drink = #{record.dailyDrink,jdbcType=INTEGER},
+      </if>
+      <if test="record.quitDrink != null">
+        quit_drink = #{record.quitDrink,jdbcType=VARCHAR},
+      </if>
+      <if test="record.quitDrinkTime != null">
+        quit_drink_time = #{record.quitDrinkTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.iqDate != null">
+        iq_date = #{record.iqDate,jdbcType=DATE},
+      </if>
+      <if test="record.deleteFlag != null">
+        delete_flag = #{record.deleteFlag,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update patient
+    set id = #{record.id,jdbcType=BIGINT},
+      patient_id = #{record.patientId,jdbcType=BIGINT},
+      certificates_type = #{record.certificatesType,jdbcType=VARCHAR},
+      certificates_number = #{record.certificatesNumber,jdbcType=VARCHAR},
+      pname = #{record.pname,jdbcType=VARCHAR},
+      gender = #{record.gender,jdbcType=VARCHAR},
+      age = #{record.age,jdbcType=INTEGER},
+      birthday = #{record.birthday,jdbcType=DATE},
+      nationality = #{record.nationality,jdbcType=VARCHAR},
+      `national` = #{record.national,jdbcType=VARCHAR},
+      incunabulum = #{record.incunabulum,jdbcType=VARCHAR},
+      residence = #{record.residence,jdbcType=VARCHAR},
+      height = #{record.height,jdbcType=INTEGER},
+      weight = #{record.weight,jdbcType=INTEGER},
+      occupation = #{record.occupation,jdbcType=VARCHAR},
+      marriage = #{record.marriage,jdbcType=VARCHAR},
+      religious_belief = #{record.religiousBelief,jdbcType=VARCHAR},
+      eating_habits = #{record.eatingHabits,jdbcType=VARCHAR},
+      eh_remark = #{record.ehRemark,jdbcType=VARCHAR},
+      heredity_history = #{record.heredityHistory,jdbcType=VARCHAR},
+      hh_remark = #{record.hhRemark,jdbcType=VARCHAR},
+      infection_history = #{record.infectionHistory,jdbcType=VARCHAR},
+      ih_remark = #{record.ihRemark,jdbcType=VARCHAR},
+      trauma_history = #{record.traumaHistory,jdbcType=VARCHAR},
+      surgery_history = #{record.surgeryHistory,jdbcType=VARCHAR},
+      family_history = #{record.familyHistory,jdbcType=VARCHAR},
+      contact_history = #{record.contactHistory,jdbcType=VARCHAR},
+      ch_remark = #{record.chRemark,jdbcType=VARCHAR},
+      me_allergy = #{record.meAllergy,jdbcType=VARCHAR},
+      meall_remark = #{record.meallRemark,jdbcType=VARCHAR},
+      allergy = #{record.allergy,jdbcType=VARCHAR},
+      all_remark = #{record.allRemark,jdbcType=VARCHAR},
+      blood_trans = #{record.bloodTrans,jdbcType=VARCHAR},
+      smoke = #{record.smoke,jdbcType=VARCHAR},
+      daily_smoke = #{record.dailySmoke,jdbcType=INTEGER},
+      quit_smoke = #{record.quitSmoke,jdbcType=VARCHAR},
+      pregnant = #{record.pregnant,jdbcType=INTEGER},
+      birth = #{record.birth,jdbcType=INTEGER},
+      premature_labour = #{record.prematureLabour,jdbcType=VARCHAR},
+      abortion = #{record.abortion,jdbcType=VARCHAR},
+      insert_date = #{record.insertDate,jdbcType=DATE},
+      source_province = #{record.sourceProvince,jdbcType=INTEGER},
+      source_city = #{record.sourceCity,jdbcType=INTEGER},
+      incu_province = #{record.incuProvince,jdbcType=INTEGER},
+      incu_city = #{record.incuCity,jdbcType=INTEGER},
+      quit_smoke_time = #{record.quitSmokeTime,jdbcType=VARCHAR},
+      contraception = #{record.contraception,jdbcType=VARCHAR},
+      drink = #{record.drink,jdbcType=VARCHAR},
+      daily_drink = #{record.dailyDrink,jdbcType=INTEGER},
+      quit_drink = #{record.quitDrink,jdbcType=VARCHAR},
+      quit_drink_time = #{record.quitDrinkTime,jdbcType=VARCHAR},
+      iq_date = #{record.iqDate,jdbcType=DATE},
+      delete_flag = #{record.deleteFlag,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gluxen.PO.Patient">
+    update patient
+    <set>
+      <if test="patientId != null">
+        patient_id = #{patientId,jdbcType=BIGINT},
+      </if>
+      <if test="certificatesType != null">
+        certificates_type = #{certificatesType,jdbcType=VARCHAR},
+      </if>
+      <if test="certificatesNumber != null">
+        certificates_number = #{certificatesNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="pname != null">
+        pname = #{pname,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        gender = #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null">
+        age = #{age,jdbcType=INTEGER},
+      </if>
+      <if test="birthday != null">
+        birthday = #{birthday,jdbcType=DATE},
+      </if>
+      <if test="nationality != null">
+        nationality = #{nationality,jdbcType=VARCHAR},
+      </if>
+      <if test="national != null">
+        `national` = #{national,jdbcType=VARCHAR},
+      </if>
+      <if test="incunabulum != null">
+        incunabulum = #{incunabulum,jdbcType=VARCHAR},
+      </if>
+      <if test="residence != null">
+        residence = #{residence,jdbcType=VARCHAR},
+      </if>
+      <if test="height != null">
+        height = #{height,jdbcType=INTEGER},
+      </if>
+      <if test="weight != null">
+        weight = #{weight,jdbcType=INTEGER},
+      </if>
+      <if test="occupation != null">
+        occupation = #{occupation,jdbcType=VARCHAR},
+      </if>
+      <if test="marriage != null">
+        marriage = #{marriage,jdbcType=VARCHAR},
+      </if>
+      <if test="religiousBelief != null">
+        religious_belief = #{religiousBelief,jdbcType=VARCHAR},
+      </if>
+      <if test="eatingHabits != null">
+        eating_habits = #{eatingHabits,jdbcType=VARCHAR},
+      </if>
+      <if test="ehRemark != null">
+        eh_remark = #{ehRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="heredityHistory != null">
+        heredity_history = #{heredityHistory,jdbcType=VARCHAR},
+      </if>
+      <if test="hhRemark != null">
+        hh_remark = #{hhRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="infectionHistory != null">
+        infection_history = #{infectionHistory,jdbcType=VARCHAR},
+      </if>
+      <if test="ihRemark != null">
+        ih_remark = #{ihRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="traumaHistory != null">
+        trauma_history = #{traumaHistory,jdbcType=VARCHAR},
+      </if>
+      <if test="surgeryHistory != null">
+        surgery_history = #{surgeryHistory,jdbcType=VARCHAR},
+      </if>
+      <if test="familyHistory != null">
+        family_history = #{familyHistory,jdbcType=VARCHAR},
+      </if>
+      <if test="contactHistory != null">
+        contact_history = #{contactHistory,jdbcType=VARCHAR},
+      </if>
+      <if test="chRemark != null">
+        ch_remark = #{chRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="meAllergy != null">
+        me_allergy = #{meAllergy,jdbcType=VARCHAR},
+      </if>
+      <if test="meallRemark != null">
+        meall_remark = #{meallRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="allergy != null">
+        allergy = #{allergy,jdbcType=VARCHAR},
+      </if>
+      <if test="allRemark != null">
+        all_remark = #{allRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="bloodTrans != null">
+        blood_trans = #{bloodTrans,jdbcType=VARCHAR},
+      </if>
+      <if test="smoke != null">
+        smoke = #{smoke,jdbcType=VARCHAR},
+      </if>
+      <if test="dailySmoke != null">
+        daily_smoke = #{dailySmoke,jdbcType=INTEGER},
+      </if>
+      <if test="quitSmoke != null">
+        quit_smoke = #{quitSmoke,jdbcType=VARCHAR},
+      </if>
+      <if test="pregnant != null">
+        pregnant = #{pregnant,jdbcType=INTEGER},
+      </if>
+      <if test="birth != null">
+        birth = #{birth,jdbcType=INTEGER},
+      </if>
+      <if test="prematureLabour != null">
+        premature_labour = #{prematureLabour,jdbcType=VARCHAR},
+      </if>
+      <if test="abortion != null">
+        abortion = #{abortion,jdbcType=VARCHAR},
+      </if>
+      <if test="insertDate != null">
+        insert_date = #{insertDate,jdbcType=DATE},
+      </if>
+      <if test="sourceProvince != null">
+        source_province = #{sourceProvince,jdbcType=INTEGER},
+      </if>
+      <if test="sourceCity != null">
+        source_city = #{sourceCity,jdbcType=INTEGER},
+      </if>
+      <if test="incuProvince != null">
+        incu_province = #{incuProvince,jdbcType=INTEGER},
+      </if>
+      <if test="incuCity != null">
+        incu_city = #{incuCity,jdbcType=INTEGER},
+      </if>
+      <if test="quitSmokeTime != null">
+        quit_smoke_time = #{quitSmokeTime,jdbcType=VARCHAR},
+      </if>
+      <if test="contraception != null">
+        contraception = #{contraception,jdbcType=VARCHAR},
+      </if>
+      <if test="drink != null">
+        drink = #{drink,jdbcType=VARCHAR},
+      </if>
+      <if test="dailyDrink != null">
+        daily_drink = #{dailyDrink,jdbcType=INTEGER},
+      </if>
+      <if test="quitDrink != null">
+        quit_drink = #{quitDrink,jdbcType=VARCHAR},
+      </if>
+      <if test="quitDrinkTime != null">
+        quit_drink_time = #{quitDrinkTime,jdbcType=VARCHAR},
+      </if>
+      <if test="iqDate != null">
+        iq_date = #{iqDate,jdbcType=DATE},
+      </if>
+      <if test="deleteFlag != null">
+        delete_flag = #{deleteFlag,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gluxen.PO.Patient">
+    update patient
+    set patient_id = #{patientId,jdbcType=BIGINT},
+      certificates_type = #{certificatesType,jdbcType=VARCHAR},
+      certificates_number = #{certificatesNumber,jdbcType=VARCHAR},
+      pname = #{pname,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=VARCHAR},
+      age = #{age,jdbcType=INTEGER},
+      birthday = #{birthday,jdbcType=DATE},
+      nationality = #{nationality,jdbcType=VARCHAR},
+      `national` = #{national,jdbcType=VARCHAR},
+      incunabulum = #{incunabulum,jdbcType=VARCHAR},
+      residence = #{residence,jdbcType=VARCHAR},
+      height = #{height,jdbcType=INTEGER},
+      weight = #{weight,jdbcType=INTEGER},
+      occupation = #{occupation,jdbcType=VARCHAR},
+      marriage = #{marriage,jdbcType=VARCHAR},
+      religious_belief = #{religiousBelief,jdbcType=VARCHAR},
+      eating_habits = #{eatingHabits,jdbcType=VARCHAR},
+      eh_remark = #{ehRemark,jdbcType=VARCHAR},
+      heredity_history = #{heredityHistory,jdbcType=VARCHAR},
+      hh_remark = #{hhRemark,jdbcType=VARCHAR},
+      infection_history = #{infectionHistory,jdbcType=VARCHAR},
+      ih_remark = #{ihRemark,jdbcType=VARCHAR},
+      trauma_history = #{traumaHistory,jdbcType=VARCHAR},
+      surgery_history = #{surgeryHistory,jdbcType=VARCHAR},
+      family_history = #{familyHistory,jdbcType=VARCHAR},
+      contact_history = #{contactHistory,jdbcType=VARCHAR},
+      ch_remark = #{chRemark,jdbcType=VARCHAR},
+      me_allergy = #{meAllergy,jdbcType=VARCHAR},
+      meall_remark = #{meallRemark,jdbcType=VARCHAR},
+      allergy = #{allergy,jdbcType=VARCHAR},
+      all_remark = #{allRemark,jdbcType=VARCHAR},
+      blood_trans = #{bloodTrans,jdbcType=VARCHAR},
+      smoke = #{smoke,jdbcType=VARCHAR},
+      daily_smoke = #{dailySmoke,jdbcType=INTEGER},
+      quit_smoke = #{quitSmoke,jdbcType=VARCHAR},
+      pregnant = #{pregnant,jdbcType=INTEGER},
+      birth = #{birth,jdbcType=INTEGER},
+      premature_labour = #{prematureLabour,jdbcType=VARCHAR},
+      abortion = #{abortion,jdbcType=VARCHAR},
+      insert_date = #{insertDate,jdbcType=DATE},
+      source_province = #{sourceProvince,jdbcType=INTEGER},
+      source_city = #{sourceCity,jdbcType=INTEGER},
+      incu_province = #{incuProvince,jdbcType=INTEGER},
+      incu_city = #{incuCity,jdbcType=INTEGER},
+      quit_smoke_time = #{quitSmokeTime,jdbcType=VARCHAR},
+      contraception = #{contraception,jdbcType=VARCHAR},
+      drink = #{drink,jdbcType=VARCHAR},
+      daily_drink = #{dailyDrink,jdbcType=INTEGER},
+      quit_drink = #{quitDrink,jdbcType=VARCHAR},
+      quit_drink_time = #{quitDrinkTime,jdbcType=VARCHAR},
+      iq_date = #{iqDate,jdbcType=DATE},
+      delete_flag = #{deleteFlag,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

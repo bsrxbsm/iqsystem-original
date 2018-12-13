@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gluxen.dao.DailyPatientDAO">
+  <resultMap id="BaseResultMap" type="com.gluxen.PO.DailyPatient">
+    <id column="inquiry_id" jdbcType="BIGINT" property="inquiryId" />
+    <result column="patient_id" jdbcType="BIGINT" property="patientId" />
+    <result column="iq_date" jdbcType="TIMESTAMP" property="iqDate" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="diagnose_label" jdbcType="VARCHAR" property="diagnoseLabel" />
+    <result column="times" jdbcType="BIGINT" property="times" />
+    <result column="amount" jdbcType="VARCHAR" property="amount" />
+    <result column="question_flag" jdbcType="INTEGER" property="questionFlag" />
+    <result column="count_age" jdbcType="VARCHAR" property="countAge" />
+    <result column="year" jdbcType="INTEGER" property="year" />
+    <result column="month" jdbcType="INTEGER" property="month" />
+    <result column="day" jdbcType="INTEGER" property="day" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    inquiry_id, patient_id, iq_date, `type`, description, diagnose_label, times, amount, 
+    question_flag, count_age, `year`, `month`, `day`
+  </sql>
+  <select id="selectByExample" parameterType="com.gluxen.PO.DailyPatientExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from daily_patient
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from daily_patient
+    where inquiry_id = #{inquiryId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from daily_patient
+    where inquiry_id = #{inquiryId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.gluxen.PO.DailyPatientExample">
+    delete from daily_patient
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" keyColumn="inquiry_id" keyProperty="inquiryId" parameterType="com.gluxen.PO.DailyPatient" useGeneratedKeys="true">
+    insert into daily_patient (patient_id, iq_date, `type`, 
+      description, diagnose_label, times, 
+      amount, question_flag, count_age, 
+      `year`, `month`, `day`)
+    values (#{patientId,jdbcType=BIGINT}, #{iqDate,jdbcType=TIMESTAMP}, #{type,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{diagnoseLabel,jdbcType=VARCHAR}, #{times,jdbcType=BIGINT}, 
+      #{amount,jdbcType=VARCHAR}, #{questionFlag,jdbcType=INTEGER}, #{countAge,jdbcType=VARCHAR}, 
+      #{year,jdbcType=INTEGER}, #{month,jdbcType=INTEGER}, #{day,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" keyColumn="inquiry_id" keyProperty="inquiryId" parameterType="com.gluxen.PO.DailyPatient" useGeneratedKeys="true">
+    insert into daily_patient
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="patientId != null">
+        patient_id,
+      </if>
+      <if test="iqDate != null">
+        iq_date,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="diagnoseLabel != null">
+        diagnose_label,
+      </if>
+      <if test="times != null">
+        times,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="questionFlag != null">
+        question_flag,
+      </if>
+      <if test="countAge != null">
+        count_age,
+      </if>
+      <if test="year != null">
+        `year`,
+      </if>
+      <if test="month != null">
+        `month`,
+      </if>
+      <if test="day != null">
+        `day`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="patientId != null">
+        #{patientId,jdbcType=BIGINT},
+      </if>
+      <if test="iqDate != null">
+        #{iqDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="diagnoseLabel != null">
+        #{diagnoseLabel,jdbcType=VARCHAR},
+      </if>
+      <if test="times != null">
+        #{times,jdbcType=BIGINT},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=VARCHAR},
+      </if>
+      <if test="questionFlag != null">
+        #{questionFlag,jdbcType=INTEGER},
+      </if>
+      <if test="countAge != null">
+        #{countAge,jdbcType=VARCHAR},
+      </if>
+      <if test="year != null">
+        #{year,jdbcType=INTEGER},
+      </if>
+      <if test="month != null">
+        #{month,jdbcType=INTEGER},
+      </if>
+      <if test="day != null">
+        #{day,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.gluxen.PO.DailyPatientExample" resultType="java.lang.Long">
+    select count(*) from daily_patient
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update daily_patient
+    <set>
+      <if test="record.inquiryId != null">
+        inquiry_id = #{record.inquiryId,jdbcType=BIGINT},
+      </if>
+      <if test="record.patientId != null">
+        patient_id = #{record.patientId,jdbcType=BIGINT},
+      </if>
+      <if test="record.iqDate != null">
+        iq_date = #{record.iqDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.type != null">
+        `type` = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null">
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.diagnoseLabel != null">
+        diagnose_label = #{record.diagnoseLabel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.times != null">
+        times = #{record.times,jdbcType=BIGINT},
+      </if>
+      <if test="record.amount != null">
+        amount = #{record.amount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.questionFlag != null">
+        question_flag = #{record.questionFlag,jdbcType=INTEGER},
+      </if>
+      <if test="record.countAge != null">
+        count_age = #{record.countAge,jdbcType=VARCHAR},
+      </if>
+      <if test="record.year != null">
+        `year` = #{record.year,jdbcType=INTEGER},
+      </if>
+      <if test="record.month != null">
+        `month` = #{record.month,jdbcType=INTEGER},
+      </if>
+      <if test="record.day != null">
+        `day` = #{record.day,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update daily_patient
+    set inquiry_id = #{record.inquiryId,jdbcType=BIGINT},
+      patient_id = #{record.patientId,jdbcType=BIGINT},
+      iq_date = #{record.iqDate,jdbcType=TIMESTAMP},
+      `type` = #{record.type,jdbcType=VARCHAR},
+      description = #{record.description,jdbcType=VARCHAR},
+      diagnose_label = #{record.diagnoseLabel,jdbcType=VARCHAR},
+      times = #{record.times,jdbcType=BIGINT},
+      amount = #{record.amount,jdbcType=VARCHAR},
+      question_flag = #{record.questionFlag,jdbcType=INTEGER},
+      count_age = #{record.countAge,jdbcType=VARCHAR},
+      `year` = #{record.year,jdbcType=INTEGER},
+      `month` = #{record.month,jdbcType=INTEGER},
+      `day` = #{record.day,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gluxen.PO.DailyPatient">
+    update daily_patient
+    <set>
+      <if test="patientId != null">
+        patient_id = #{patientId,jdbcType=BIGINT},
+      </if>
+      <if test="iqDate != null">
+        iq_date = #{iqDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="diagnoseLabel != null">
+        diagnose_label = #{diagnoseLabel,jdbcType=VARCHAR},
+      </if>
+      <if test="times != null">
+        times = #{times,jdbcType=BIGINT},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=VARCHAR},
+      </if>
+      <if test="questionFlag != null">
+        question_flag = #{questionFlag,jdbcType=INTEGER},
+      </if>
+      <if test="countAge != null">
+        count_age = #{countAge,jdbcType=VARCHAR},
+      </if>
+      <if test="year != null">
+        `year` = #{year,jdbcType=INTEGER},
+      </if>
+      <if test="month != null">
+        `month` = #{month,jdbcType=INTEGER},
+      </if>
+      <if test="day != null">
+        `day` = #{day,jdbcType=INTEGER},
+      </if>
+    </set>
+    where inquiry_id = #{inquiryId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gluxen.PO.DailyPatient">
+    update daily_patient
+    set patient_id = #{patientId,jdbcType=BIGINT},
+      iq_date = #{iqDate,jdbcType=TIMESTAMP},
+      `type` = #{type,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      diagnose_label = #{diagnoseLabel,jdbcType=VARCHAR},
+      times = #{times,jdbcType=BIGINT},
+      amount = #{amount,jdbcType=VARCHAR},
+      question_flag = #{questionFlag,jdbcType=INTEGER},
+      count_age = #{countAge,jdbcType=VARCHAR},
+      `year` = #{year,jdbcType=INTEGER},
+      `month` = #{month,jdbcType=INTEGER},
+      `day` = #{day,jdbcType=INTEGER}
+    where inquiry_id = #{inquiryId,jdbcType=BIGINT}
+  </update>
+</mapper>

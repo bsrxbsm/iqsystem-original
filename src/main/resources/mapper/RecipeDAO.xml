@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gluxen.dao.RecipeDAO">
+  <resultMap id="BaseResultMap" type="com.gluxen.PO.Recipe">
+    <id column="recipe_id" jdbcType="BIGINT" property="recipeId" />
+    <result column="inquiry_id" jdbcType="BIGINT" property="inquiryId" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="amount" jdbcType="INTEGER" property="amount" />
+    <result column="is_stock" jdbcType="INTEGER" property="isStock" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    recipe_id, inquiry_id, remarks, amount, is_stock
+  </sql>
+  <select id="selectByExample" parameterType="com.gluxen.PO.RecipeExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from recipe
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from recipe
+    where recipe_id = #{recipeId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from recipe
+    where recipe_id = #{recipeId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.gluxen.PO.RecipeExample">
+    delete from recipe
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" keyColumn="recipe_id" keyProperty="recipeId" parameterType="com.gluxen.PO.Recipe" useGeneratedKeys="true">
+    insert into recipe (inquiry_id, remarks, amount, 
+      is_stock)
+    values (#{inquiryId,jdbcType=BIGINT}, #{remarks,jdbcType=VARCHAR}, #{amount,jdbcType=INTEGER}, 
+      #{isStock,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" keyColumn="recipe_id" keyProperty="recipeId" parameterType="com.gluxen.PO.Recipe" useGeneratedKeys="true">
+    insert into recipe
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="inquiryId != null">
+        inquiry_id,
+      </if>
+      <if test="remarks != null">
+        remarks,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="isStock != null">
+        is_stock,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="inquiryId != null">
+        #{inquiryId,jdbcType=BIGINT},
+      </if>
+      <if test="remarks != null">
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=INTEGER},
+      </if>
+      <if test="isStock != null">
+        #{isStock,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.gluxen.PO.RecipeExample" resultType="java.lang.Long">
+    select count(*) from recipe
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update recipe
+    <set>
+      <if test="record.recipeId != null">
+        recipe_id = #{record.recipeId,jdbcType=BIGINT},
+      </if>
+      <if test="record.inquiryId != null">
+        inquiry_id = #{record.inquiryId,jdbcType=BIGINT},
+      </if>
+      <if test="record.remarks != null">
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.amount != null">
+        amount = #{record.amount,jdbcType=INTEGER},
+      </if>
+      <if test="record.isStock != null">
+        is_stock = #{record.isStock,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update recipe
+    set recipe_id = #{record.recipeId,jdbcType=BIGINT},
+      inquiry_id = #{record.inquiryId,jdbcType=BIGINT},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      amount = #{record.amount,jdbcType=INTEGER},
+      is_stock = #{record.isStock,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gluxen.PO.Recipe">
+    update recipe
+    <set>
+      <if test="inquiryId != null">
+        inquiry_id = #{inquiryId,jdbcType=BIGINT},
+      </if>
+      <if test="remarks != null">
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=INTEGER},
+      </if>
+      <if test="isStock != null">
+        is_stock = #{isStock,jdbcType=INTEGER},
+      </if>
+    </set>
+    where recipe_id = #{recipeId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gluxen.PO.Recipe">
+    update recipe
+    set inquiry_id = #{inquiryId,jdbcType=BIGINT},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=INTEGER},
+      is_stock = #{isStock,jdbcType=INTEGER}
+    where recipe_id = #{recipeId,jdbcType=BIGINT}
+  </update>
+</mapper>
