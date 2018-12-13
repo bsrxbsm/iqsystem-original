@@ -1,4 +1,4 @@
-package com.gluxen.service.impl;
+﻿package com.gluxen.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
@@ -208,7 +208,7 @@ public class DailyPatientServiceImpl implements DailyPatientService{
     }
 
     /**
-     * 删除某一位病人的某一条病历
+     * 删除某一位病人的某一条病历  使得
      * @param inquiryId
      * @return
      */
