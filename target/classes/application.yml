@@ -1,8 +1,8 @@
 spring:
   datasource:
       driver-class-name: com.mysql.jdbc.Driver
-      url: jdbc:mysql://120.78.2.36:3306/iqsystem?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
-#      url: jdbc:mysql://localhost:3306/iqsystem?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+      url: jdbc:mysql://120.78.2.36:3306/iqsystem?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false&useAffectedRows=true
+    #  url: jdbc:mysql://localhost:3306/iqsystem?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useAffectedRows=true
       username: root
 #      password: 123456
       password: root
